@@ -13,7 +13,7 @@ setlocal
 set "scriptSourcePath=%~dp0switch-panopto.ps1"
 set "hiddenDir=C:\ProgramData\SwitchPanopto"
 set "scriptDestPath=%hiddenDir%\switch-panopto.ps1"
-set "startMenuPath=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Switch Panopto.lnk"
+set "startMenuPath=C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Switch Panopto.lnk"
 
 :: Create hidden directory if it doesn't exist
 if not exist "%hiddenDir%" (
@@ -27,11 +27,11 @@ copy /Y "%scriptSourcePath%" "%scriptDestPath%"
 set "shortcutTarget=powershell.exe"
 set "shortcutArgs=-ExecutionPolicy Bypass -File \"%scriptDestPath%\""
 
-:: Create the shortcut in the Start Menu
+:: Create the shortcut in the global Start Menu
 powershell -command "$ws = New-Object -ComObject WScript.Shell; $shortcut = $ws.CreateShortcut('%startMenuPath%'); $shortcut.TargetPath = '%shortcutTarget%'; $shortcut.Arguments = '%shortcutArgs%'; $shortcut.IconLocation = 'powershell.exe'; $shortcut.Save()"
 
 :: Inform the user
-echo The script has been installed and a shortcut named 'Switch Panopto' has been created in the Start Menu.
+echo The script has been installed and a shortcut named 'Switch Panopto' has been created in the global Start Menu.
 
 endlocal
 pause
