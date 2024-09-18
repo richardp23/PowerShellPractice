@@ -2,14 +2,18 @@ $ServiceName = "Panopto Remote Recorder Service"
 
 # Check if running as administrator
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Host "Script is not running with administrator privileges. Attempting to elevate..."
     try {
         # Relaunch as administrator
-        Start-Process powershell.exe "-File `"$PSCommandPath`"" -Verb RunAs
+        Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
         exit
     } catch {
-        Write-Error "Failed to elevate privileges. Exiting script."
+        Write-Error "Failed to elevate privileges. Error: $_"
+        pause
         exit
     }
+} else {
+    Write-Host "Admin privileges ok!"
 }
 
 try {
